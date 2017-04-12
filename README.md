@@ -53,5 +53,26 @@ service httpd restart
 #### 参考链接
 [http://www.jianshu.com/p/b34c78bf9bf0](http://www.jianshu.com/p/b34c78bf9bf0)</br>
 [http://blog.csdn.net/zhouyingge1104/article/details/44459655](http://blog.csdn.net/zhouyingge1104/article/details/44459655)
+## 配置文件格式
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<MySQL>
+		<user>your_user</user>
+		<passwd>your_passwd</passwd>
+	</MySQL>
+	<微信公众平台>
+		<appid>your_appid</appid>
+		<secret>your_secret</secret>
+	</微信公众平台>
+	<图灵机器人>
+		<key>your_key</key>
+	</图灵机器人>
+	<FacePlusPlus>
+		<api_key>your_api_key</api_key>
+		<api_secret>your_api_secret</api_secret>
+	</FacePlusPlus>
+</config>
+```
 ## 效果图
 ![image](https://github.com/SigalHu/WeiXin/raw/master/img/1.png) ![image](https://github.com/SigalHu/WeiXin/raw/master/img/2.png) ![image](https://github.com/SigalHu/WeiXin/raw/master/img/3.png) ![image](https://github.com/SigalHu/WeiXin/raw/master/img/4.png) ![image](https://github.com/SigalHu/WeiXin/raw/master/img/5.png) ![image](https://github.com/SigalHu/WeiXin/raw/master/img/6.png)
