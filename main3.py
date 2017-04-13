@@ -47,12 +47,12 @@ def __initwxmenu(loop):
 				'secret':myid3.get_WeiXin_secret()}
 	urlMenu = 'https://api.weixin.qq.com/cgi-bin/menu/create'
 	dataMenu = {'access_token':None}
-	bodyNenu = {'button':[{'name':'功能'},{'name','帮助'}]}
+	bodyMenu = {'button':[{'name':'功能'},{'name','帮助'}]}
 	try:
 		task = asyncio.ensure_future(__getClient(urlToken, dataToken,loop),loop=loop)
 		taskDone = loop.run_until_complete(asyncio.wait_for(task,timeout=5))
 		dataMenu['access_token'] = taskDone['access_token']
-		task = asyncio.ensure_future(__postClient(urlMenu, dataMenu,bodyNenu,loop),loop=loop)
+		task = asyncio.ensure_future(__postClient(urlMenu, dataMenu,bodyMenu,loop),loop=loop)
 		taskDone = loop.run_until_complete(asyncio.wait_for(task,timeout=5))
 		print(taskDone)
 	except Exception as ex:
