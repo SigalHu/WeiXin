@@ -18,11 +18,10 @@ __wxMenu = {'1': '自言自语',
 
 def __getWXMenu():
 	global __wxMenu
-	strMenu = '[鸡] 回复序号 [鸡]\n'
+	strMenu = '回复序号：\n'
 	for key,value in __wxMenu.items():
-		strMenu += '  %s. %s   |\n' % (key,value)
-	strMenu += '/:pig-----------------/:pig'
-	return strMenu
+		strMenu += '%s. %s\n' % (key,value)
+	return strMenu[:-1]
 
 async def __postClient(url,data,body,loop):
 	try:
