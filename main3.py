@@ -148,7 +148,18 @@ async def postWX(request):
 
 		elif userConfig == '在线点歌':
 			if MsgType.lower() == 'text' or MsgType.lower() == 'voice':
-				resp = await netease_music3.getMusicInfo(Content, request.app.loop)
+				keyword, offset,keywordlen = __wxSQL.readNeteaseMusic(FromUserName)
+				if len(Content) > keywordlen:
+					Content = Content[:keywordlen]
+				if keyword != Content:
+					keyword = Content
+					offset = 0
+				else:
+					offset += netease_music3.getMaxNum()
+				resp = await netease_music3.getMusicInfo(keyword, offset, request.app.loop)
+				if resp is None:
+					offset = 0
+				__wxSQL.writeNeteaseMusic(FromUserName,keyword,offset)
 				result = WXFormat.netease2wx(resp, FromUserName, ToUserName, CreateTime)
 			else:
 				Content = '你当我傻啊，这不是歌名吧'
