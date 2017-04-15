@@ -154,11 +154,11 @@ async def postWX(request):
 				if keyword != Content:
 					keyword = Content
 					offset = 0
-				else:
-					offset += netease_music3.getMaxNum()
 				resp = await netease_music3.getMusicInfo(keyword, offset, request.app.loop)
 				if resp is None:
 					offset = 0
+				else:
+					offset += len(resp)
 				__wxSQL.writeNeteaseMusic(FromUserName,keyword,offset)
 				result = WXFormat.netease2wx(resp, FromUserName, ToUserName, CreateTime)
 			else:

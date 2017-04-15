@@ -4,10 +4,6 @@ from aiohttp import ClientSession
 
 __MUSIC_NUM = 8
 
-def getMaxNum():
-	global __MUSIC_NUM
-	return __MUSIC_NUM
-
 async def __fetch(url,data,loop):
 	try:
 		async with ClientSession(loop=loop) as session:
