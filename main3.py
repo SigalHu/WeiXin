@@ -20,9 +20,8 @@ def __getWXMenu():
 	global __wxMenu
 	strMenu = '[鸡] 回复序号 [鸡]\n'
 	for key,value in __wxMenu.items():
-		strMenu += '  %s. %s   |\n' % (key,value)
-	strMenu += '/:pig-----------------/:pig'
-	return strMenu
+		strMenu += '  %s. %s\n' % (key,value)
+	return strMenu[:-1]
 
 async def __postClient(url,data,body,loop):
 	try:
@@ -70,18 +69,17 @@ async def getIndex(request):
 	return web.Response(body='hello JuJu!\nby Sigal'.encode('utf-8'))
 
 async def getWX(request):
-	# print(request.query)
+	# hu 响应微信发送的Token验证
 	echostr = 'success'
 	try:
-		reg = 'echostr=(.*?)&'
-		echostr = re.findall(reg, request.query_string)[0]
+		echostr = request.query['echostr']  # hu 返回查询字符串中echostr的值
 	except Exception as ex:
 		pass
 	return web.Response(body=echostr.encode('utf-8'))
 
 async def postWX(request):
 	global __wxSQL
-	info = await request.text()
+	info = await request.text()    # hu 读取请求的body
 	reg = r'''<xml><ToUserName><!\[CDATA\[(.*?)\]\]></ToUserName>
 <FromUserName><!\[CDATA\[(.*?)\]\]></FromUserName>
 <CreateTime>(.*?)</CreateTime>
@@ -101,13 +99,13 @@ async def postWX(request):
 <MsgId>(.*?)</MsgId>
 <Recognition><!\[CDATA\[(.*?)\]\]></Recognition>'''
 		MediaId, Format, MsgId, Content = re.findall(reg, info)[0]
-	elif MsgType.lower() == 'event':   	# hu 用户订阅或取消订阅
+	elif MsgType.lower() == 'event':   	# hu 接收事件推送（关注、取消关注等等）
 		reg = r'''<Event><!\[CDATA\[(.*?)\]\]></Event>'''
 		Event = re.findall(reg, info)[0]
-		if Event.lower() == 'subscribe':
+		if Event.lower() == 'subscribe':          # hu 用户关注事件
 			Content = '回复菜单，给你看看我的超能力'
 			result = WXFormat.text2wx(FromUserName, ToUserName, CreateTime, Content)
-		elif Event.lower() == 'unsubscribe':
+		elif Event.lower() == 'unsubscribe':      # hu 取消关注事件
 			__wxSQL.delete(FromUserName)
 		return web.Response(body=result.encode('utf-8'))
 
@@ -194,7 +192,7 @@ def __main():
 	app.router.add_route('GET', '/', getIndex)
 	app.router.add_route('GET', '/WeiXin', getWX)
 	app.router.add_route('POST', '/WeiXin', postWX)
-	web.run_app(app, port=6670)
+	web.run_app(app, port=6670)   # hu 使用6670端口
 	loop.close()
 
 if __name__ == '__main__':

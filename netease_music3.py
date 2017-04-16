@@ -2,12 +2,14 @@ import asyncio
 from aiohttp import ClientSession
 # import random
 
-__MUSIC_NUM = 8
+__MUSIC_NUM = 8  # hu 返回的最大歌曲数
 
 async def __fetch(url,data,loop):
 	try:
 		async with ClientSession(loop=loop) as session:
+			# hu 发送GET请求，params为GET请求参数，字典类型
 			async with session.post(url, data=data,timeout=5) as response:
+				# hu 读取json格式读取响应的body并返回字典类型
 				return await response.json()
 	except Exception as ex:
 		print('__fetch:%s' % ex)
