@@ -4,7 +4,7 @@ import time
 import math
 import hashlib
 
-__NEWS_NUM = 8
+__NEWS_NUM = 8   # hu 返回的最大新闻数
 __cookie = None
 
 def getASCP():
@@ -35,9 +35,11 @@ async def __fetch(url,data,loop):
 	global __cookie
 	try:
 		async with ClientSession(cookies=__cookie,loop=loop) as session:
+			# hu 发送GET请求，params为GET请求参数，字典类型
 			async with session.get(url, params=data,timeout=5) as response:
 				if response.cookies and 'tt_webid' in response.cookies:
 					__cookie = {'tt_webid':response.cookies['tt_webid'].value}
+				# hu 以json格式读取响应的body并返回字典类型
 				return await response.json()
 	except Exception as ex:
 		print('__fetch:%s' % ex)
@@ -70,6 +72,7 @@ async def getNewsInfo(loop):
 					'Description': None,
 					'PicUrl': None,
 					'Url': None}
+			# hu 去掉广告
 			if news_hot['is_feed_ad']:
 				continue
 			news['Title'] = news_hot['title']
@@ -85,8 +88,8 @@ async def getNewsInfo(loop):
 			result['news'].append(news)
 			if len(result['news']) == __NEWS_NUM:
 				break
+		# hu 把有图片的新闻放到前面
 		result['news'].sort(key=lambda obj: obj.get('PicUrl'), reverse=True)
-
 	except Exception as ex:
 		print('getNewsInfo:%s' % ex)
 	return result

@@ -7,9 +7,9 @@ __MUSIC_NUM = 8  # hu 返回的最大歌曲数
 async def __fetch(url,data,loop):
 	try:
 		async with ClientSession(loop=loop) as session:
-			# hu 发送GET请求，params为GET请求参数，字典类型
+			# hu 发送POST请求，data为POST请求参数，字典类型
 			async with session.post(url, data=data,timeout=5) as response:
-				# hu 读取json格式读取响应的body并返回字典类型
+				# hu 以json格式读取响应的body并返回字典类型
 				return await response.json()
 	except Exception as ex:
 		print('__fetch:%s' % ex)
